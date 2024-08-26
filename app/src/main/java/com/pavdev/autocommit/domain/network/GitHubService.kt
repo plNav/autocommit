@@ -21,7 +21,7 @@ private val retrofit = Retrofit.Builder()
 /**
  * Retrofit service object for creating api calls
  */
-interface MarsApiService {
+interface GitHubService {
     @GET("photos")
     suspend fun getPhotos(): List<MarsPhoto>
 }
@@ -29,8 +29,8 @@ interface MarsApiService {
 /**
  * A public Api object that exposes the lazy-initialized Retrofit service
  */
-object MarsApi {
-    val retrofitService: MarsApiService by lazy {
-        retrofit.create(MarsApiService::class.java)
+object GitHubApi {
+    val retrofitService: GitHubService by lazy {
+        retrofit.create(GitHubService::class.java)
     }
 }

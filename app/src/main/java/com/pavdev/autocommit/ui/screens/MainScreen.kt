@@ -21,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.pavdev.autocommit.ui.composables.ActionButton
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
+import com.pavdev.autocommit.ui.viewmodels.MainUiStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
     val status by mainViewModel.status.observeAsState()
+    val marsUiState = mainViewModel.marsUiState
     val appBarColor by animateColorAsState(
         label = "StatusColorFade",
         targetValue = status?.color ?: Color.Gray,
@@ -64,6 +66,14 @@ fun MainScreen(mainViewModel: MainViewModel) {
                     name = "Test Connection",
                     onClick = mainViewModel::testConnection,
                 )
+                when (marsUiState) {
+                    is MainUiStatus.Loading -> Text("Loading", modifier = Modifier.fillMaxSize())
+                    is MainUiStatus.Success -> Text(
+                        "${marsUiState.photos} Loaded Success",
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    is MainUiStatus.Error -> Text("Loading", modifier = Modifier.fillMaxSize())
+                }
             }
         }
     }
