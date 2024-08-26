@@ -15,12 +15,10 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-/**
- * UI state for the Home screen
- */
+/** UI state for the Home screen */
 sealed interface MainUiStatus {
     data class Success(val photos: String) : MainUiStatus
-    data class Error(val error : Exception) : MainUiStatus
+    data class Error(val error: Exception) : MainUiStatus
     data object Loading : MainUiStatus
 }
 
@@ -30,9 +28,7 @@ class MainViewModel : ViewModel() {
     var marsUiState: MainUiStatus by mutableStateOf(MainUiStatus.Loading)
         private set
 
-    /**
-     * Call getRepoData() on init so we can display status immediately.
-     */
+    /** Call getRepoData() on init so we can display status immediately */
     init {
         getRepoData()
     }
@@ -55,7 +51,7 @@ class MainViewModel : ViewModel() {
 
     /** LiveData is another way to handle state */
     private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
-    val status: LiveData<ConnectionStatus> = _status;
+    val status: LiveData<ConnectionStatus> = _status
 
     fun testConnection() {
         viewModelScope.launch {
