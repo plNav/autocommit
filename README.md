@@ -5,7 +5,7 @@ Welcome to the autocommit App! This Android application is designed to streamlin
 ## Features
 
 - **Fast Commit**: Simplifies the process of making commits to GitHub, allowing for quick updates.
-- **Clean Architecture**: Ensures scalability, maintainability, and loose coupling between the core components.
+- **Clean Architecture with MVVM**: Ensures scalability, maintainability, and loose coupling between the core components.
 - **Jetpack Compose**: Utilizes the latest UI toolkit for Android to create intuitive and responsive layouts.
 - **Minimalistic UI**: A clean and user-friendly interface that focuses on user experience.
 - **Kotlin Coroutines**: For asynchronous tasks to enhance performance and simplicity.
