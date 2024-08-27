@@ -32,7 +32,8 @@ class MainViewModel : ViewModel() {
 
     /** Call getRepoData() on init so we can display status immediately */
     init {
-        getRepoData()
+     //   getRepoData()
+        getReadmeContents()
     }
 
     private fun getRepoData() {
@@ -54,13 +55,19 @@ class MainViewModel : ViewModel() {
 
     fun getReadmeContents() {
         viewModelScope.launch {
-            val response = GitHubApi.retrofitService.getRepoContents("README.md")
-            if (response.isSuccessful) {
-                val content = response.body()
-                val decodedContent = String(Base64.decode(content?.content, Base64.DEFAULT))
-                // Now you have the content of README.md, you can show or edit it
-            } else {
-                // Handle errors
+            try {
+                val response = GitHubApi.retrofitService.getRepoContents("README.md")
+                if (response.isSuccessful) {
+                    Log.i("dev", "GitHubResponse Success")
+                    val content = response.body()
+                    val decodedContent = String(Base64.decode(content?.content, Base64.DEFAULT))
+                    // Now you have the content of README.md, you can show or edit it
+                } else {
+                    // Handle errors
+                    Log.e("dev", "GitHubResponse $response")
+                }
+            } catch (e: Exception) {
+                Log.e("dev", "GitHubResponse $e")
             }
         }
     }
