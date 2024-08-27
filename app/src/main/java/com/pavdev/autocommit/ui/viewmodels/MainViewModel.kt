@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pavdev.autocommit.data.ConnectionStatus
+import com.pavdev.autocommit.data.GitHubContent
 import com.pavdev.autocommit.data.UpdateContentRequest
 import com.pavdev.autocommit.domain.network.GitHubApi
 import kotlinx.coroutines.delay
@@ -58,10 +59,13 @@ class MainViewModel : ViewModel() {
             try {
                 val response = GitHubApi.retrofitService.getRepoContents("README.md")
                 if (response.isSuccessful) {
-                    Log.i("dev", "GitHubResponse Success")
                     val content = response.body()
+                    val sha = content?.sha.orEmpty();
                     val decodedContent = String(Base64.decode(content?.content, Base64.DEFAULT))
                     // Now you have the content of README.md, you can show or edit it
+                    val updatedContent = "$decodedContent \n > new new line from autocommit"
+                    Log.i("dev", "GitHubResponse Success $decodedContent")
+                    updateReadmeContents(updatedContent, sha)
                 } else {
                     // Handle errors
                     Log.e("dev", "GitHubResponse $response")
@@ -72,24 +76,23 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun updateReadmeContents(updatedContent: String) {
-        viewModelScope.launch {
+    suspend fun updateReadmeContents(updatedContent: String, sha: String) {
             val encodedContent = Base64.encodeToString(updatedContent.toByteArray(), Base64.NO_WRAP)
             val updateRequest = UpdateContentRequest(
                 message = "Update README.md",
                 content = encodedContent,
-                sha = "current_file_sha" // You need to pass the latest SHA from getReadmeContents()
+                sha = sha,
             )
             val response = GitHubApi.retrofitService.updateFileContents("README.md", updateRequest)
             if (response.isSuccessful) {
-                Log.i("dev", "GitHubResponse Success")
+                Log.i("dev", "GitHubResponse Success $response")
                 // Handle successful update
             } else {
                 // Handle errors
-                Log.e("dev", "GitHubResponse Error")
+                Log.e("dev", "GitHubResponse Error $response")
 
             }
-        }
+
     }
 
     /** LiveData is another way to handle state */

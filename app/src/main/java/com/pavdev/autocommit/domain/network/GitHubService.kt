@@ -5,6 +5,7 @@ import com.pavdev.autocommit.data.GitHubContent
 import com.pavdev.autocommit.data.UpdateContentRequest
 import com.pavdev.autocommit.data.UpdateContentResponse
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -56,7 +57,7 @@ interface GitHubService {
     suspend fun updateFileContents(
         @Path("path") path: String,
         @Body requestBody: UpdateContentRequest
-    ): Response<UpdateContentResponse>
+    ): Response<JsonObject>
 }
 
 object GitHubApi {
