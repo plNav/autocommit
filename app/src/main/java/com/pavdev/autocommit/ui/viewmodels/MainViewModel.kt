@@ -9,11 +9,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pavdev.autocommit.data.ConnectionStatus
-import com.pavdev.autocommit.domain.network.GitHubApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import android.util.Base64
+import com.pavdev.autocommit.data.UpdateContentRequest
+import com.pavdev.autocommit.domain.network.GitHubApi
 
 /** UI state for the Home screen */
 sealed interface MainUiStatus {
@@ -37,14 +39,48 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             marsUiState = MainUiStatus.Loading
             marsUiState = try {
-                val listResult = GitHubApi.retrofitService.getPhotos()
+                MainUiStatus.Loading
+              /*  val listResult = GitHubApi.retrofitService.getPhotos()
                 MainUiStatus.Success(
                     "Success: ${listResult.size} Mars photos retrieved"
-                )
+                )*/
             } catch (e: IOException) {
                 MainUiStatus.Error(e)
             } catch (e: HttpException) {
                 MainUiStatus.Error(e)
+            }
+        }
+    }
+
+    fun getReadmeContents() {
+        viewModelScope.launch {
+            val response = GitHubApi.retrofitService.getRepoContents("plNav", "autocommitTarget", "README.md")
+            if (response.isSuccessful) {
+                val content = response.body()
+                val decodedContent = String(Base64.decode(content?.content, Base64.DEFAULT))
+                // Now you have the content of README.md, you can show or edit it
+            } else {
+                // Handle errors
+            }
+        }
+    }
+
+    fun updateReadmeContents(updatedContent: String) {
+        viewModelScope.launch {
+            val encodedContent = Base64.encodeToString(updatedContent.toByteArray(), Base64.NO_WRAP)
+            val updateRequest = UpdateContentRequest(
+                message = "Update README.md",
+                content = encodedContent,
+                sha = "current_file_sha" // You need to pass the latest SHA from getReadmeContents()
+            )
+            val response = GitHubApi.retrofitService.updateFileContents("plNav", "autocommitTarget", "README.md", updateRequest)
+            if (response.isSuccessful) {
+                Log.i("dev", "GitHubResponse Success")
+                // Handle successful update
+            } else {
+                // Handle errors
+                Log.e("dev", "GitHubResponse Error")
+
             }
         }
     }
