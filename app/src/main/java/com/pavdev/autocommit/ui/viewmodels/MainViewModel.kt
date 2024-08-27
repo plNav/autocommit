@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pavdev.autocommit.data.ConnectionStatus
-import com.pavdev.autocommit.data.UpdateContentRequest
+import com.pavdev.autocommit.data.enums.ConnectionStatus
+import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
 import com.pavdev.autocommit.domain.network.GitHubApi
 import kotlinx.coroutines.launch
 
@@ -65,7 +65,7 @@ class MainViewModel : ViewModel() {
                         Base64.NO_WRAP
                     )
                 }
-                val updateRequest = UpdateContentRequest(
+                val updateRequest = GitHubUpdateRequest(
                     message = commitMessage,
                     content = encodedContent,
                     sha = sha.value!!,

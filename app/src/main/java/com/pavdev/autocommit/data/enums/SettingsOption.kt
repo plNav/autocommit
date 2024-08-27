@@ -1,4 +1,4 @@
-package com.pavdev.autocommit.data
+package com.pavdev.autocommit.data.enums
 
 enum class SettingsOption(val description: String) {
     CHANGE_DEFAULTS("Change Defaults"),

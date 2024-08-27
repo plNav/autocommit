@@ -18,7 +18,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.pavdev.autocommit.data.ConnectionStatus
+import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.ui.composables.CustomTopAppBar
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
@@ -47,6 +47,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = content.orEmpty(),
                     modifier = Modifier

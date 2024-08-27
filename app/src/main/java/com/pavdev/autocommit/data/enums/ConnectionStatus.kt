@@ -1,4 +1,4 @@
-package com.pavdev.autocommit.data
+package com.pavdev.autocommit.data.enums
 
 import androidx.compose.ui.graphics.Color
 

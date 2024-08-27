@@ -4,7 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.pavdev.autocommit.data.ConnectionStatus
+import com.pavdev.autocommit.data.enums.ConnectionStatus
 
 @Composable
 fun StatusText(status: ConnectionStatus?) {

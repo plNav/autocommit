@@ -1,4 +1,4 @@
-package com.pavdev.autocommit.data
+package com.pavdev.autocommit.data.dtos
 
 import kotlinx.serialization.Serializable
 
@@ -10,11 +10,3 @@ data class GitHubContentResponse(
     val content: String?,
     val encoding: String?
 )
-
-@Serializable
-data class UpdateContentRequest(
-    val message : String,
-    val content: String,
-    val sha: String
-)
-
