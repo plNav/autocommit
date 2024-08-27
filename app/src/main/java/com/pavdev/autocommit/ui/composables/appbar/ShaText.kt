@@ -1,3 +1,5 @@
+package com.pavdev.autocommit.ui.composables.appbar
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text

@@ -1,3 +1,5 @@
+package com.pavdev.autocommit.ui.composables.appbar
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings

@@ -1,4 +1,4 @@
-package com.pavdev.autocommit.ui.composables
+package com.pavdev.autocommit.ui.composables.appbar
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween

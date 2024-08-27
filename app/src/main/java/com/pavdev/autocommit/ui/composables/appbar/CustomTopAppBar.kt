@@ -1,7 +1,5 @@
-package com.pavdev.autocommit.ui.composables
+package com.pavdev.autocommit.ui.composables.appbar
 
-import SettingsIcon
-import ShaText
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
