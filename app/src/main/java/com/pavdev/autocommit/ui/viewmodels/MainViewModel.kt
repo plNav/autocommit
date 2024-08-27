@@ -1,22 +1,14 @@
 package com.pavdev.autocommit.ui.viewmodels
 
 import android.util.Base64
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pavdev.autocommit.data.ConnectionStatus
-import com.pavdev.autocommit.data.GitHubContent
 import com.pavdev.autocommit.data.UpdateContentRequest
 import com.pavdev.autocommit.domain.network.GitHubApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 /** UI state for the Home screen */
 sealed interface MainUiStatus {
@@ -27,91 +19,74 @@ sealed interface MainUiStatus {
 
 class MainViewModel : ViewModel() {
 
-    /** The mutable State that stores the status of the most recent request */
-    var marsUiState: MainUiStatus by mutableStateOf(MainUiStatus.Loading)
-        private set
+    private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
+    private val _content = MutableLiveData<String?>(null)
+    private val _sha = MutableLiveData<String?>(null)
+    val status: LiveData<ConnectionStatus> = _status
+    val content: LiveData<String?> = _content
+    val sha: LiveData<String?> = _sha
 
-    /** Call getRepoData() on init so we can display status immediately */
+    private val defaultFile = "README.md"
+    private val defaultCommit = "Update README.md"
+    private val defaultLine = " \n > Line from pavdev autocommit"
+
     init {
-     //   getRepoData()
         getReadmeContents()
     }
 
-    private fun getRepoData() {
-        viewModelScope.launch {
-            marsUiState = MainUiStatus.Loading
-            marsUiState = try {
-                MainUiStatus.Loading
-                /*  val listResult = GitHubApi.retrofitService.getPhotos()
-                  MainUiStatus.Success(
-                      "Success: ${listResult.size} Mars photos retrieved"
-                  )*/
-            } catch (e: IOException) {
-                MainUiStatus.Error(e)
-            } catch (e: HttpException) {
-                MainUiStatus.Error(e)
-            }
-        }
-    }
-
     fun getReadmeContents() {
+        _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
             try {
-                val response = GitHubApi.retrofitService.getRepoContents("README.md")
-                if (response.isSuccessful) {
-                    val content = response.body()
-                    val sha = content?.sha.orEmpty();
-                    val decodedContent = String(Base64.decode(content?.content, Base64.DEFAULT))
-                    // Now you have the content of README.md, you can show or edit it
-                    val updatedContent = "$decodedContent \n > new new line from autocommit"
-                    Log.i("dev", "GitHubResponse Success $decodedContent")
-                    updateReadmeContents(updatedContent, sha)
-                } else {
-                    // Handle errors
-                    Log.e("dev", "GitHubResponse $response")
+                val response = GitHubApi.retrofitService.getRepoContents(defaultFile)
+                if (!response.isSuccessful) {
+                    _status.postValue(ConnectionStatus.FAILED)
+                    return@launch
                 }
-            } catch (e: Exception) {
-                Log.e("dev", "GitHubResponse $e")
-            }
-        }
-    }
-
-    suspend fun updateReadmeContents(updatedContent: String, sha: String) {
-            val encodedContent = Base64.encodeToString(updatedContent.toByteArray(), Base64.NO_WRAP)
-            val updateRequest = UpdateContentRequest(
-                message = "Update README.md",
-                content = encodedContent,
-                sha = sha,
-            )
-            val response = GitHubApi.retrofitService.updateFileContents("README.md", updateRequest)
-            if (response.isSuccessful) {
-                Log.i("dev", "GitHubResponse Success $response")
-                // Handle successful update
-            } else {
-                // Handle errors
-                Log.e("dev", "GitHubResponse Error $response")
-
-            }
-
-    }
-
-    /** LiveData is another way to handle state */
-    private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
-    val status: LiveData<ConnectionStatus> = _status
-
-    fun testConnection() {
-        viewModelScope.launch {
-            try {
-                Log.i("_DEV_", "Testing connection...")
-                _status.value = ConnectionStatus.CONNECTING
-                delay(2000L)
-                Log.i("_DEV_", "Connection successful")
+                val responseBody = response.body()
+                responseBody?.sha?.let {
+                    _sha.value = responseBody.sha
+                }
+                responseBody?.content?.let {
+                    _content.value = String(Base64.decode(it, Base64.DEFAULT))
+                }
                 _status.postValue(ConnectionStatus.CONNECTED)
             } catch (e: Exception) {
-                Log.e("_DEV_", "Connection failed: ${e.message}")
                 _status.postValue(ConnectionStatus.FAILED)
             }
         }
     }
 
+    fun updateReadmeContents(
+        updatedContent: String? = null,
+        commitMessage: String = defaultCommit
+    ) {
+        _status.value = ConnectionStatus.CONNECTING
+        viewModelScope.launch {
+            try {
+                val encodedContent: String = if (updatedContent != null) {
+                    Base64.encodeToString(updatedContent.toByteArray(), Base64.NO_WRAP)
+                } else {
+                    Base64.encodeToString(
+                        "${_content.value} $defaultLine".toByteArray(),
+                        Base64.NO_WRAP
+                    )
+                }
+                val updateRequest = UpdateContentRequest(
+                    message = commitMessage,
+                    content = encodedContent,
+                    sha = sha.value!!,
+                )
+                val response =
+                    GitHubApi.retrofitService.updateFileContents(defaultFile, updateRequest)
+                if (response.isSuccessful) {
+                    _status.postValue(ConnectionStatus.CONNECTED)
+                } else {
+                    _status.postValue(ConnectionStatus.FAILED)
+                }
+            } catch (e: Exception) {
+                _status.postValue(ConnectionStatus.FAILED)
+            }
+        }
+    }
 }

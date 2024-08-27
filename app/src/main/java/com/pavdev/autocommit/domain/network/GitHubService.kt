@@ -1,9 +1,8 @@
 package com.pavdev.autocommit.domain.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.pavdev.autocommit.data.GitHubContent
+import com.pavdev.autocommit.data.GitHubContentResponse
 import com.pavdev.autocommit.data.UpdateContentRequest
-import com.pavdev.autocommit.data.UpdateContentResponse
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import okhttp3.Interceptor
@@ -51,7 +50,7 @@ interface GitHubService {
     @GET("repos/$USERNAME/$REPO/contents/{path}")
     suspend fun getRepoContents(
         @Path("path") path: String
-    ): Response<GitHubContent>
+    ): Response<GitHubContentResponse>
 
     @PUT("repos/$USERNAME/$REPO/contents/{path}")
     suspend fun updateFileContents(

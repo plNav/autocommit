@@ -8,9 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActionButton(name: String, onClick: () -> Unit) {
+fun ActionButton(name: String, isEnabled: Boolean = true, onClick: () -> Unit) {
     Button(
         onClick = onClick,
+        enabled = isEnabled,
         modifier = Modifier.padding(16.dp)
     ) {
         Text(name)
