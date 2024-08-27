@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
-import com.pavdev.autocommit.domain.network.GitHubApi
+import com.pavdev.autocommit.domain.GitHubApi
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
