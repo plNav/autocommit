@@ -10,13 +10,6 @@ import com.pavdev.autocommit.data.UpdateContentRequest
 import com.pavdev.autocommit.domain.network.GitHubApi
 import kotlinx.coroutines.launch
 
-/** UI state for the Home screen */
-sealed interface MainUiStatus {
-    data class Success(val photos: String) : MainUiStatus
-    data class Error(val error: Exception) : MainUiStatus
-    data object Loading : MainUiStatus
-}
-
 class MainViewModel : ViewModel() {
 
     private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)

@@ -1,13 +1,15 @@
 package com.pavdev.autocommit.ui.screens
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
+import ActionButton
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,13 +17,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.data.ConnectionStatus
-import com.pavdev.autocommit.ui.composables.ActionButton
 import com.pavdev.autocommit.ui.composables.CustomTopAppBar
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
     val status by mainViewModel.status.observeAsState()
@@ -32,30 +32,33 @@ fun MainScreen(mainViewModel: MainViewModel) {
         CustomTopAppBar(
             status = status,
             sha = sha,
-            onSettingsClicked = { /* Define what happens when settings is clicked */ }
         )
     }) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.BottomCenter
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ActionButton(
-                    name = "UPDATE",
-                    onClick = mainViewModel::getReadmeContents,
+                Text(
+                    text = content.orEmpty(),
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 ActionButton(
                     name = "FAST COMMIT",
                     isEnabled = status == ConnectionStatus.CONNECTED,
-                    onClick = mainViewModel::updateReadmeContents,
+                    onClick = mainViewModel::updateReadmeContents
                 )
-                Text(text = content.orEmpty())
             }
         }
     }

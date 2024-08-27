@@ -1,6 +1,6 @@
-package com.pavdev.autocommit.ui.composables
-
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +12,10 @@ fun ActionButton(name: String, isEnabled: Boolean = true, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         enabled = isEnabled,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp),
+        shape = RoundedCornerShape(4.dp)
     ) {
         Text(name)
     }
