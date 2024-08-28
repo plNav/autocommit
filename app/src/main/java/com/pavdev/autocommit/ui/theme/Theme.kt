@@ -1,6 +1,5 @@
 package com.pavdev.autocommit.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,15 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = connectedDark,
+    surface = backgroundDark,
+    onSurface = onBackgroundDark,
+    background = backgroundDark,
+    primaryContainer = primaryDark,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = connectedLight,
+    surface = backgroundLight,
+    onSurface = onBackgroundLight,
+    background = backgroundLight,
+    primaryContainer = primaryLight,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

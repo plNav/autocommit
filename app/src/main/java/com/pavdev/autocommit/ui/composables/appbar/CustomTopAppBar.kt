@@ -8,8 +8,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.pavdev.autocommit.data.enums.ConnectionStatus
+import com.pavdev.autocommit.ui.theme.unconnectedLight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +20,7 @@ fun CustomTopAppBar(
 ) {
     val appBarColor by animateColorAsState(
         label = "StatusColorFade",
-        targetValue = status?.color ?: Color.Gray,
+        targetValue = status?.getColor() ?: unconnectedLight,
         animationSpec = tween(durationMillis = 1000),
     )
     TopAppBar(
@@ -34,6 +35,12 @@ fun CustomTopAppBar(
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = appBarColor)
     )
+}
+
+@Preview
+@Composable
+fun AppBarPreview () {
+    CustomTopAppBar(status = ConnectionStatus.CONNECTED, sha = "" )
 }
 
 

@@ -1,5 +1,7 @@
 package com.pavdev.autocommit.ui.screens
 
+import android.hardware.camera2.params.ColorSpaceTransform
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.BottomAppBar
@@ -8,11 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.ui.composables.ActionButton
 import com.pavdev.autocommit.ui.composables.MainContent
 import com.pavdev.autocommit.ui.composables.appbar.CustomTopAppBar
+import com.pavdev.autocommit.ui.theme.AutocommitTheme
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
 @Composable
@@ -44,8 +49,49 @@ fun MainScreen(mainViewModel: MainViewModel) {
     ) { innerPadding ->
         MainContent(
             innerPadding = innerPadding,
-            content = content
+            content = content,
+            status = status!!,
         )
     }
+}
+
+@Suppress("KotlinConstantConditions")
+@Preview
+@Composable
+fun MainScreenPreview() {
+    val status = ConnectionStatus.CONNECTED
+    val sha = ""
+    val content = "Preview Content"
+    val isDarkTheme = false
+    AutocommitTheme (darkTheme = isDarkTheme){
+        Scaffold(
+            topBar = {
+                CustomTopAppBar(
+                    status = status,
+                    sha = sha,
+                )
+            },
+            bottomBar = {
+                BottomAppBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(140.dp),
+                ) {
+                    ActionButton(
+                        name = "AUTOCOMMIT",
+                        isEnabled = status == ConnectionStatus.CONNECTED,
+                        onClick = {  }
+                    )
+                }
+            },
+        ) { innerPadding ->
+            MainContent(
+                innerPadding = innerPadding,
+                content = content,
+                status = status!!,
+            )
+        }
+    }
+
 }
 
