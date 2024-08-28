@@ -1,7 +1,5 @@
 package com.pavdev.autocommit.ui.screens
 
-import android.hardware.camera2.params.ColorSpaceTransform
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.BottomAppBar
@@ -10,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.data.enums.ConnectionStatus
@@ -59,8 +56,8 @@ fun MainScreen(mainViewModel: MainViewModel) {
 @Preview
 @Composable
 fun MainScreenPreview() {
-    val status = ConnectionStatus.CONNECTED
-    val sha = ""
+    val status = ConnectionStatus.FAILED
+    val sha = "1234123412341234123412341234"
     val content = "Preview Content"
     val isDarkTheme = false
     AutocommitTheme (darkTheme = isDarkTheme){
@@ -88,7 +85,7 @@ fun MainScreenPreview() {
             MainContent(
                 innerPadding = innerPadding,
                 content = content,
-                status = status!!,
+                status = status,
             )
         }
     }
