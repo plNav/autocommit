@@ -11,3 +11,5 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val disconnectedLight = Color(0xFF66);
+
+val iconColor = Color(0xFFf6b93b)

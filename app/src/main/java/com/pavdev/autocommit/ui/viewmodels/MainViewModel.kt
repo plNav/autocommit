@@ -31,7 +31,7 @@ class MainViewModel : ViewModel() {
         _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
             try {
-                val response = GitHubApi.retrofitService.getRepoContents(defaultFile)
+          /*      val response = GitHubApi.retrofitService.getRepoContents(defaultFile)
                 if (!response.isSuccessful) {
                     _status.postValue(ConnectionStatus.FAILED)
                     return@launch
@@ -42,7 +42,8 @@ class MainViewModel : ViewModel() {
                 }
                 responseBody?.content?.let {
                     _content.value = String(Base64.decode(it, Base64.DEFAULT))
-                }
+                }*/
+                _content.value = "Hello World"
                 _status.postValue(ConnectionStatus.CONNECTED)
             } catch (e: Exception) {
                 _status.postValue(ConnectionStatus.FAILED)

@@ -1,6 +1,6 @@
 package com.pavdev.autocommit.ui.screens
 
-import ActionButton
+import com.pavdev.autocommit.ui.composables.ActionButton
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
