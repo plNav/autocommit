@@ -22,6 +22,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
     val status by mainViewModel.status.observeAsState()
     val sha by mainViewModel.sha.observeAsState()
     val content by mainViewModel.content.observeAsState()
+    val error by mainViewModel.error.observeAsState()
 
     Scaffold(
         topBar = {
@@ -48,6 +49,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
             innerPadding = innerPadding,
             content = content,
             status = status!!,
+            error = error,
         )
     }
 }
@@ -60,6 +62,7 @@ fun MainScreenPreview() {
     val sha = "1234123412341234123412341234"
     val content = "Preview Content"
     val isDarkTheme = false
+    val error = "Preview Error"
     AutocommitTheme (darkTheme = isDarkTheme){
         Scaffold(
             topBar = {
@@ -86,6 +89,7 @@ fun MainScreenPreview() {
                 innerPadding = innerPadding,
                 content = content,
                 status = status,
+                error = error,
             )
         }
     }

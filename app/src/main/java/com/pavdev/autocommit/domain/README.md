@@ -1,4 +1,4 @@
-## Create a file 'credentials.kt' in domain package
+## Create a file 'Credentials.kt' in domain package
 
 ```kotlin
     const val BASE_URL = "https://api.github.com/"

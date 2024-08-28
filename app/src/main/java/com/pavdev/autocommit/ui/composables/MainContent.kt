@@ -34,7 +34,9 @@ import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.ui.theme.AutocommitTheme
 
 @Composable
-fun MainContent(innerPadding: PaddingValues, content: String?, status: ConnectionStatus) {
+fun MainContent(
+    innerPadding: PaddingValues, content: String?, status: ConnectionStatus, error: String?
+) {
     var textSize by remember { mutableStateOf(16.sp) }
     val minTextSize = 2.sp
     val maxTextSize = 60.sp
@@ -46,9 +48,7 @@ fun MainContent(innerPadding: PaddingValues, content: String?, status: Connectio
     ) {
 
         Crossfade(
-            label = "Status Content Crossfade",
-            targetState = status,
-            animationSpec = tween(1000)
+            label = "Status Content Crossfade", targetState = status, animationSpec = tween(1000)
         ) { animatedStatus ->
             when (animatedStatus) {
                 ConnectionStatus.CONNECTING -> {
@@ -66,11 +66,15 @@ fun MainContent(innerPadding: PaddingValues, content: String?, status: Connectio
                 }
 
                 ConnectionStatus.DISCONNECTED -> {
-                    Text("Disconnected Reasons, button to change credentials")
+                    Text(error ?: "Unknown Disconnected Reasons",
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                        )
                 }
 
                 ConnectionStatus.FAILED -> {
-                    Text(text = "Fail Errors")
+                    Text(error ?: "Unknown Disconnected Reasons",
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    )
                 }
 
                 else -> {
@@ -84,8 +88,7 @@ fun MainContent(innerPadding: PaddingValues, content: String?, status: Connectio
                     )
 
                     Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()
                     ) {
                         Slider(
                             value = textSize.value,
@@ -116,7 +119,8 @@ fun ContentPreview() {
             MainContent(
                 innerPadding = innerPadding,
                 content = "Preview Content",
-                status = ConnectionStatus.CONNECTING
+                status = ConnectionStatus.FAILED,
+                error = "Preview Error"
             )
 
         }

@@ -14,9 +14,11 @@ class MainViewModel : ViewModel() {
 
     private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
     private val _content = MutableLiveData<String?>(null)
+    private val _error = MutableLiveData<String?>(null)
     private val _sha = MutableLiveData<String?>(null)
     val status: LiveData<ConnectionStatus> = _status
     val content: LiveData<String?> = _content
+    val error: LiveData<String?> = _error
     val sha: LiveData<String?> = _sha
 
     private val defaultFile = "README.md"
@@ -34,6 +36,7 @@ class MainViewModel : ViewModel() {
                 val response = GitHubApi.retrofitService.getRepoContents(defaultFile)
                 if (!response.isSuccessful) {
                     _status.postValue(ConnectionStatus.FAILED)
+                    _error.postValue("GetContentsResponseFailed \n $response")
                     return@launch
                 }
                 val responseBody = response.body()
@@ -43,10 +46,10 @@ class MainViewModel : ViewModel() {
                 responseBody?.content?.let {
                     _content.value = String(Base64.decode(it, Base64.DEFAULT))
                 }
-              //  _content.value = "Hello World"
                 _status.postValue(ConnectionStatus.CONNECTED)
             } catch (e: Exception) {
                 _status.postValue(ConnectionStatus.FAILED)
+                _error.postValue("GetContentsException \n ${e.message}")
             }
         }
     }
@@ -77,9 +80,11 @@ class MainViewModel : ViewModel() {
                     getReadmeContents()
                 } else {
                     _status.postValue(ConnectionStatus.FAILED)
+                    _error.postValue("UpdateContentsResponseFailed \n $response")
                 }
             } catch (e: Exception) {
                 _status.postValue(ConnectionStatus.FAILED)
+                _error.postValue("UpdateContentsException \n ${e.message}")
             }
         }
     }
