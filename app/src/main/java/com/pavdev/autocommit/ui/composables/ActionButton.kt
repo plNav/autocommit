@@ -4,11 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -23,7 +22,11 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun ActionButton(name: String, isEnabled: Boolean = true, onClick: () -> Unit) {
+fun ActionButton(
+    name: String = "AUTOCOMMIT",
+    isEnabled: Boolean = true,
+    onClick: () -> Unit
+) {
     Button(
         onClick = onClick,
         enabled = isEnabled,
@@ -32,9 +35,14 @@ fun ActionButton(name: String, isEnabled: Boolean = true, onClick: () -> Unit) {
             .padding(bottom = 4.dp),
         shape = RoundedCornerShape(4.dp)
     ) {
-        Row (horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically) {
-            AutocommitIcon(size = 34.dp)
-            Spacer(modifier = Modifier.width(16.dp))
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+            AutocommitIcon(size = 56.dp)
             Text(text = name, style = TextStyle(fontSize = 22.sp))
         }
     }
@@ -43,8 +51,12 @@ fun ActionButton(name: String, isEnabled: Boolean = true, onClick: () -> Unit) {
 @Preview
 @Composable
 fun MyButtonPreview() {
-    Box(modifier = Modifier.background(Color.Gray).height(100.dp).padding(10.dp)) {
-        ActionButton(name = "AUTOCOMMIT" ) {
-        }
+    Box(
+        modifier = Modifier
+            .background(Color.Gray)
+            .height(100.dp)
+            .padding(10.dp)
+    ) {
+        ActionButton(name = "AUTOCOMMIT") {}
     }
 }

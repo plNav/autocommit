@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.ui.theme.iconColor
@@ -29,17 +30,17 @@ fun AutocommitIcon(
         name = "GitHubLightning",
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
-        viewportWidth = 24f,
-        viewportHeight = 24f,
+        viewportWidth = 28f,
+        viewportHeight = 28f,
         tintColor = Color.Red,
     ).apply {
         // Circle path
         path(
             stroke = brush,
-            strokeLineWidth = 2.0f,
+            strokeLineWidth = 3f,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(12f, 1f)
+            moveTo(14f, 3f)  // Adjusted circle position
             arcToRelative(
                 a = 11f,
                 b = 11f,
@@ -63,39 +64,47 @@ fun AutocommitIcon(
         // Lightning bolt path
         path(
             stroke = brush,
-            // fill = brush,
+            fill = brush,
             strokeLineWidth = 2.0f,
             strokeLineCap = StrokeCap.Round,
             strokeLineJoin = StrokeJoin.Round,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(13f, 3f)
-            lineTo(13f, 10f)
-            lineTo(19f, 10f)
-            lineTo(11f, 21f)
-            lineTo(11f, 14f)
-            lineTo(5f, 14f)
-            lineTo(13f, 3f)
+            moveTo(15f, 5f)  // Adjusted lightning position
+            lineTo(15f, 12f)
+            lineTo(21f, 12f)
+            lineTo(13f, 23f)
+            lineTo(13f, 16f)
+            lineTo(7f, 16f)
+            lineTo(15f, 5f)
             close()
         }
-        // Triangle path at the top left of the circle
+        // Enlarged Triangle path at the top left of the circle
         path(
             fill = brush,
+            stroke = brush,
+            strokeLineWidth = 1.0f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(2f, 1f)
-            lineTo(8f, 2f)
-            lineTo(3f, 6f)
+            moveTo(3f, 1.5f)  // Move the triangle higher and to the left
+            lineTo(9f, 3f)  // Extend the right side further out
+            lineTo(5f, 6f)  // Extend the bottom side further down
             close()
         }
-        // Triangle path at the top right of the circle
+        // Mirrored Triangle path at the top right of the circle
         path(
             fill = brush,
+            stroke = brush,
+            strokeLineWidth = 1.0f,
+            strokeLineCap = StrokeCap.Round,
+            strokeLineJoin = StrokeJoin.Round,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(22f, 1f)
-            lineTo(16f, 2f)
-            lineTo(21f, 6f)
+            moveTo(25f, 1.5f)  // Mirror of 3f, 1.5f on the right side
+            lineTo(19f, 3f)  // Mirror of 9f, 3f on the right side
+            lineTo(23f, 6f)  // Mirror of 5f, 6f on the right side
             close()
         }
     }.build()
@@ -109,4 +118,10 @@ fun AutocommitIcon(
             .background(color = backgroundColor)
             .padding(6.dp)
     )
+}
+
+@Preview
+@Composable
+fun IconPreview() {
+    AutocommitIcon(size = 255.dp)
 }
