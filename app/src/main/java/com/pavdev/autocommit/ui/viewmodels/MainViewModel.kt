@@ -27,7 +27,7 @@ class MainViewModel : ViewModel() {
         getReadmeContents()
     }
 
-    fun getReadmeContents() {
+    private fun getReadmeContents() {
         _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
             try {
@@ -73,7 +73,7 @@ class MainViewModel : ViewModel() {
                 val response =
                     GitHubApi.retrofitService.updateFileContents(defaultFile, updateRequest)
                 if (response.isSuccessful) {
-                    _status.postValue(ConnectionStatus.CONNECTED)
+                    getReadmeContents()
                 } else {
                     _status.postValue(ConnectionStatus.FAILED)
                 }

@@ -26,7 +26,6 @@ fun SettingsIcon() {
                 contentDescription = "Settings"
             )
         }
-
         DropdownMenu(
             expanded = showMenu,
             onDismissRequest = { showMenu = false }
