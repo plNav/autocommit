@@ -40,7 +40,7 @@ fun AutocommitIcon(
             strokeLineWidth = 3f,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(14f, 3f)  // Adjusted circle position
+            moveTo(14f, 3f)
             arcToRelative(
                 a = 11f,
                 b = 11f,
@@ -70,7 +70,7 @@ fun AutocommitIcon(
             strokeLineJoin = StrokeJoin.Round,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(15f, 5f)  // Adjusted lightning position
+            moveTo(15f, 5f)
             lineTo(15f, 12f)
             lineTo(21f, 12f)
             lineTo(13f, 23f)
@@ -88,9 +88,9 @@ fun AutocommitIcon(
             strokeLineJoin = StrokeJoin.Round,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(3f, 1.5f)  // Move the triangle higher and to the left
-            lineTo(9f, 3f)  // Extend the right side further out
-            lineTo(5f, 6f)  // Extend the bottom side further down
+            moveTo(3f, 1.5f)
+            lineTo(9f, 3f)
+            lineTo(5f, 6f)
             close()
         }
         // Mirrored Triangle path at the top right of the circle
@@ -102,9 +102,9 @@ fun AutocommitIcon(
             strokeLineJoin = StrokeJoin.Round,
             pathFillType = PathFillType.NonZero
         ) {
-            moveTo(25f, 1.5f)  // Mirror of 3f, 1.5f on the right side
-            lineTo(19f, 3f)  // Mirror of 9f, 3f on the right side
-            lineTo(23f, 6f)  // Mirror of 5f, 6f on the right side
+            moveTo(25f, 1.5f)
+            lineTo(19f, 3f)
+            lineTo(23f, 6f)
             close()
         }
     }.build()
