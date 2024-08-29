@@ -7,9 +7,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.pavdev.autocommit.data.Settings
 import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
 import com.pavdev.autocommit.data.enums.ConnectionStatus
+import com.pavdev.autocommit.data.model.Settings
 import com.pavdev.autocommit.domain.GitHubApi
 import com.pavdev.autocommit.util.CryptoManager
 import com.pavdev.autocommit.util.DataStoreManager
@@ -51,7 +51,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 return@launch
             }
             githubApi.configure(
-                token = token!!,
+                token = token,
                 username = storedSettings.username,
                 repo = storedSettings.repository
             )
@@ -107,11 +107,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             bytes = token.toByteArray(),
             outputStream = FileManager.getFileOutputStream(filesDir)
         )
+        githubApi.configure(token = token)
         getRepoContent()
     }
 
     fun saveSettings(settings: Settings) {
         _settings.value = settings
+        githubApi.configure(username = settings.username, repo = settings.repository)
         viewModelScope.launch {
             dataStoreManager.saveSettings(settings)
             Log.i("dev", "Settings Saved $settings")
@@ -156,14 +158,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun encryptMessage(message: String): String {
-        return cryptoManager.encrypt(
-            bytes = message.encodeToByteArray(),
-            outputStream = FileManager.getFileOutputStream(filesDir),
-        ).decodeToString()
-    }
-
-    fun decryptMessage(): String {
+    private fun decryptMessage(): String {
         return cryptoManager.decrypt(
             inputStream = FileManager.getFileInputStream(filesDir)
         ).decodeToString()

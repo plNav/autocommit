@@ -24,7 +24,6 @@ class GitHubApi {
     private val service: GitHubService
         get() = _retrofitService ?: retrofitService
 
-    // Interceptor to add the authorization token to every request
     private val authInterceptor = Interceptor { chain ->
         val newRequest = chain.request().newBuilder()
             .apply {
@@ -36,19 +35,16 @@ class GitHubApi {
         chain.proceed(newRequest)
     }
 
-    // Lazy initialization of the Retrofit service
     private val retrofitService: GitHubService by lazy {
         createRetrofit().create(GitHubService::class.java)
     }
 
-    // Method to create OkHttpClient with the current token
     private fun createOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .build()
     }
 
-    // Method to create Retrofit instance
     private fun createRetrofit(): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(jsonConverter.asConverterFactory("application/json".toMediaType()))
@@ -57,24 +53,23 @@ class GitHubApi {
             .build()
     }
 
-    // Method to set the token, username, and repository
-    fun configure(token: String, username: String, repo: String) {
-        this.token = token
-        this.username = username
-        this.repo = repo
-        // Re-initialize the service with the new token
+    fun configure(token: String? = null, username: String? = null, repo: String? = null) {
+        if (token != null) this.token = token
+        if (username != null) this.username = username
+        if (repo != null) this.repo = repo
         _retrofitService = createRetrofit().create(GitHubService::class.java)
     }
 
-    // Function to call getRepoContents with the configured username and repo
     suspend fun getRepoContents(path: String): Response<GitHubContentResponse> {
         val user = username ?: throw IllegalStateException("Username not set")
         val repository = repo ?: throw IllegalStateException("Repository not set")
         return service.getRepoContents(user, repository, path)
     }
 
-    // Function to call updateFileContents with the configured username and repo
-    suspend fun updateFileContents(path: String, requestBody: GitHubUpdateRequest): Response<JsonObject> {
+    suspend fun updateFileContents(
+        path: String,
+        requestBody: GitHubUpdateRequest
+    ): Response<JsonObject> {
         val user = username ?: throw IllegalStateException("Username not set")
         val repository = repo ?: throw IllegalStateException("Repository not set")
         return service.updateFileContents(user, repository, path, requestBody)

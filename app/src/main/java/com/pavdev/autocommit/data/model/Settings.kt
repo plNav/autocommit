@@ -1,4 +1,4 @@
-package com.pavdev.autocommit.data
+package com.pavdev.autocommit.data.model
 
 class Settings(
     val username: String,
