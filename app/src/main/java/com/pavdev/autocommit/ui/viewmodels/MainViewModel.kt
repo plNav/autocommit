@@ -43,19 +43,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun loadCredentials() {
         viewModelScope.launch {
-            val storedSettings = dataStoreManager.getSettings()
-            _settings.value = storedSettings
-            token = decryptMessage()
-            if (!validateCredentials()) {
+            try {
+                val storedSettings = dataStoreManager.getSettings()
+                _settings.value = storedSettings
+                token = decryptMessage()
+                if (!validateCredentials()) {
+                    _status.postValue(ConnectionStatus.DISCONNECTED)
+                    return@launch
+                }
+                githubApi.configure(
+                    token = token,
+                    username = storedSettings.username,
+                    repo = storedSettings.repository
+                )
+                getRepoContent()
+            } catch (e: Exception) {
                 _status.postValue(ConnectionStatus.DISCONNECTED)
-                return@launch
+                _error.postValue("Token Not Configured")
             }
-            githubApi.configure(
-                token = token,
-                username = storedSettings.username,
-                repo = storedSettings.repository
-            )
-            getRepoContent()
         }
     }
 
