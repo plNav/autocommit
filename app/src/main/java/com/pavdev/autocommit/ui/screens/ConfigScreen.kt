@@ -19,15 +19,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
-import com.pavdev.autocommit.util.CryptoManager
-import com.pavdev.autocommit.util.FileManager
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 @Composable
-fun ConfigScreen(mainViewModel: MainViewModel, filesDir: File) {
-    val cryptoManager = CryptoManager()
+fun ConfigScreen(mainViewModel: MainViewModel) {
     var messageToEncrypt by remember {
         mutableStateOf("")
     }
@@ -50,17 +44,12 @@ fun ConfigScreen(mainViewModel: MainViewModel, filesDir: File) {
             Spacer(modifier = Modifier.height(8.dp))
             Row {
                 Button(onClick = {
-                    messageToDecrypt = cryptoManager.encrypt(
-                        bytes = messageToEncrypt.encodeToByteArray(),
-                        outputStream = FileManager.getFileOutputStream(filesDir),
-                    ).decodeToString()
+                    messageToDecrypt = mainViewModel.encryptMessage(messageToEncrypt)
                 }) {
                     Text(text = "Encrypt")
                 }
                 Button(onClick = {
-                    messageToEncrypt = cryptoManager.decrypt(
-                        inputStream = FileManager.getFileInputStream(filesDir)
-                    ).decodeToString()
+                    messageToEncrypt = mainViewModel.decryptMessage()
                 }) {
                     Text(text = "Decrypt")
                 }

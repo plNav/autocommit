@@ -15,9 +15,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        mainViewModel.saveFilesDir(filesDir)
         setContent {
             AutocommitTheme {
-               ConfigScreen(mainViewModel, filesDir)
+               ConfigScreen(mainViewModel)
             }
         }
     }
