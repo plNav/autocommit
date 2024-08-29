@@ -1,6 +1,6 @@
 # AutoCommit App
 
-![autocommit-readme](https://github.com/user-attachments/assets/4628d28b-b1e2-4ae4-8eb8-4985bdc1aa46)
+![autocommit-readme](https://github.com/user-attachments/assets/b465b911-7e48-4c35-8276-2fa769db70ec)
 
 
 Welcome to the AutoCommit App! This Android application is designed to streamline the process of making fast commits to GitHub repositories. With an emphasis on easy configuration and user-friendly design, the app leverages the power of the GitHub API and encrypted data storage to manage your GitHub tokens securely. Built with clean architecture principles and Jetpack Compose, it provides an efficient and modern user experience.
