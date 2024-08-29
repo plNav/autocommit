@@ -10,6 +10,11 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface GitHubService {
+
+    companion object {
+        const val BASE_URL = "https://api.github.com/"
+    }
+
     @GET("repos/$USERNAME/$REPO/contents/{path}")
     suspend fun getRepoContents(
         @Path("path") path: String

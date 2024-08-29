@@ -1,6 +1,7 @@
 package com.pavdev.autocommit.domain
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.pavdev.autocommit.domain.GitHubService.Companion.BASE_URL
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType

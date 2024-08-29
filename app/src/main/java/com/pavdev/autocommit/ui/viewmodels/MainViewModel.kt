@@ -1,38 +1,39 @@
 package com.pavdev.autocommit.ui.viewmodels
 
+import android.app.Application
 import android.util.Base64
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pavdev.autocommit.data.AutoCommitCredentials
-import com.pavdev.autocommit.data.DEFAULT_CREDENTIALS
-import com.pavdev.autocommit.data.enums.ConnectionStatus
+import com.pavdev.autocommit.data.Settings
 import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
+import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.domain.GitHubApi
 import com.pavdev.autocommit.util.CryptoManager
+import com.pavdev.autocommit.util.DataStoreManager
 import com.pavdev.autocommit.util.FileManager
 import kotlinx.coroutines.launch
-import okhttp3.Credentials
-import java.io.File
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application : Application) : AndroidViewModel(application) {
 
-    private val _credentials = MutableLiveData<AutoCommitCredentials?>(null)
+    private val cryptoManager = CryptoManager()
+    private val dataStoreManager = DataStoreManager(application)
+
+    private val filesDir = application.filesDir
+    private var token : String? = null
+
     private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
+    private val _settings = MutableLiveData<Settings?>(null)
     private val _content = MutableLiveData<String?>(null)
     private val _error = MutableLiveData<String?>(null)
     private val _sha = MutableLiveData<String?>(null)
 
-    val credentials : LiveData<AutoCommitCredentials?> = _credentials
     val status: LiveData<ConnectionStatus> = _status
+    val settings : LiveData<Settings?> = _settings
     val content: LiveData<String?> = _content
     val error: LiveData<String?> = _error
     val sha: LiveData<String?> = _sha
-
-    private var githubToken : String? = null
-    private val cryptoManager = CryptoManager()
-    private lateinit var filesDir: File
 
     init {
         loadCredentials()
@@ -40,15 +41,29 @@ class MainViewModel : ViewModel() {
     }
 
     private fun loadCredentials() {
+        viewModelScope.launch {
+           _settings.postValue(dataStoreManager.getSettings())
+            token = decryptMessage()
+        }
+    }
 
-        _credentials.value = DEFAULT_CREDENTIALS
+    private fun validateCredentials() : String? {
+        if(_settings.value == null ){
+            return "Settings Null"
+        }
+        if(token == null){
+            return "Token Null"
+        }
+        return null
     }
 
     private fun getReadmeContents() {
+        validateCredentials()
+
         _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
             try {
-                val response = GitHubApi.retrofitService.getRepoContents(_credentials.value!!.defaultRepoFile)
+                val response = GitHubApi.retrofitService.getRepoContents(_settings.value!!.defaultRepoFile)
                 if (!response.isSuccessful) {
                     _status.postValue(ConnectionStatus.FAILED)
                     _error.postValue("GetContentsResponseFailed \n $response")
@@ -69,9 +84,13 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun saveCredentials(settings : Settings, token : String){
+        // TODO ENCRYPT AND
+    }
+
     fun updateReadmeContents(
         updatedContent: String? = null,
-        commitMessage: String = _credentials.value!!.defaultCommit
+        commitMessage: String = _settings.value!!.defaultCommit
     ) {
         _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
@@ -80,7 +99,7 @@ class MainViewModel : ViewModel() {
                     Base64.encodeToString(updatedContent.toByteArray(), Base64.NO_WRAP)
                 } else {
                     Base64.encodeToString(
-                        "${_content.value} ${_credentials.value!!.defaultAddedLine}".toByteArray(),
+                        "${_content.value} ${_settings.value!!.defaultAddedLine}".toByteArray(),
                         Base64.NO_WRAP
                     )
                 }
@@ -91,7 +110,7 @@ class MainViewModel : ViewModel() {
                 )
                 val response =
                     GitHubApi.retrofitService.updateFileContents(
-                        _credentials.value!!.defaultRepoFile, updateRequest
+                        _settings.value!!.defaultRepoFile, updateRequest
                     )
                 if (response.isSuccessful) {
                     getReadmeContents()
@@ -119,7 +138,4 @@ class MainViewModel : ViewModel() {
         ).decodeToString()
     }
 
-    fun saveFilesDir(filesDir: File) {
-        this.filesDir = filesDir
-    }
 }
