@@ -1,4 +1,4 @@
-# AutoCommit App
+# Would you like to push a commit every day?
 
 
 ![autocommit-readme](https://github.com/user-attachments/assets/0e817d8c-968a-4030-946e-45588797b741)
