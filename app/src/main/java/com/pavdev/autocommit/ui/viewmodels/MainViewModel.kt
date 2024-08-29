@@ -107,6 +107,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             bytes = token.toByteArray(),
             outputStream = FileManager.getFileOutputStream(filesDir)
         )
+        getRepoContent()
     }
 
     fun saveSettings(settings: Settings) {
@@ -115,6 +116,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             dataStoreManager.saveSettings(settings)
             Log.i("dev", "Settings Saved $settings")
         }
+        getRepoContent()
     }
 
     fun updateReadmeContents(
