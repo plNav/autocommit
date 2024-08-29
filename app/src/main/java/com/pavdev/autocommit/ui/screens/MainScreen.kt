@@ -29,6 +29,7 @@ fun MainScreen(mainViewModel: MainViewModel, onNavigateToConfig: () -> Unit) {
             CustomTopAppBar(
                 status = status,
                 sha = sha,
+                onNavigateSettings = onNavigateToConfig
             )
         },
         bottomBar = {

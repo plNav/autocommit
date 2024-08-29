@@ -2,6 +2,7 @@ package com.pavdev.autocommit.ui.viewmodels
 
 import android.app.Application
 import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.pavdev.autocommit.data.Settings
 import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
 import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.domain.GitHubApi
+import com.pavdev.autocommit.domain.TOKEN
 import com.pavdev.autocommit.util.CryptoManager
 import com.pavdev.autocommit.util.DataStoreManager
 import com.pavdev.autocommit.util.FileManager
@@ -38,24 +40,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         loadCredentials()
-        if (validateCredentials()) {
-            getReadmeContents()
-        }
     }
 
     private fun loadCredentials() {
         viewModelScope.launch {
             val storedSettings = dataStoreManager.getSettings()
-            _settings.postValue(storedSettings)
-            token = decryptMessage()
-            if (token.isNullOrBlank()) {
-                throw Exception("Invalid Token Exception")
+            _settings.value = storedSettings
+            token = TOKEN
+            if (!validateCredentials()) {
+                return@launch
             }
             githubApi.configure(
                 token = token!!,
                 username = storedSettings.username,
                 repo = storedSettings.repository
             )
+            getRepoContent()
         }
     }
 
@@ -76,7 +76,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return true
     }
 
-    private fun getReadmeContents() {
+    private fun getRepoContent() {
         _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
             try {
@@ -101,8 +101,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveCredentials(settings: Settings, token: String) {
-        // TODO ENCRYPT AND
+    fun saveToken(token: String) {
+        this.token = token
+        cryptoManager.encrypt(
+            bytes = token.toByteArray(),
+            outputStream = FileManager.getFileOutputStream(filesDir)
+        )
+    }
+
+    fun saveSettings(settings: Settings) {
+        _settings.value = settings
+        viewModelScope.launch {
+            dataStoreManager.saveSettings(settings)
+            Log.i("dev", "Settings Saved $settings")
+        }
     }
 
     fun updateReadmeContents(
@@ -130,7 +142,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         _settings.value!!.defaultRepoFile, updateRequest
                     )
                 if (response.isSuccessful) {
-                    getReadmeContents()
+                    getRepoContent()
                 } else {
                     _status.postValue(ConnectionStatus.FAILED)
                     _error.postValue("UpdateContentsResponseFailed \n $response")

@@ -48,7 +48,7 @@ class DataStoreManager(context: Context) {
             )
         }
 
-    suspend fun saveAutoCommitCredentials(credentials: Settings) {
+    suspend fun saveSettings(credentials: Settings) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.USERNAME] = credentials.username
             preferences[PreferenceKeys.REPOSITORY] = credentials.repository

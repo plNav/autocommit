@@ -31,7 +31,7 @@ class Settings(
         val DEFAULT_SETTINGS = Settings(
             username = "your-github-username",
             repository = "your-github-repository",
-            defaultCommit = "Update README.md with AutoCommit",
+            defaultCommit = "Updated README.md by AutoCommit",
             defaultRepoFile = "README.md",
             defaultAddedLine = " \n > Line from AutoCommit"
         )

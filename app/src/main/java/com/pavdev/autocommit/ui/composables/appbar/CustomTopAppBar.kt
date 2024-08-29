@@ -17,6 +17,7 @@ import com.pavdev.autocommit.ui.theme.unconnectedLight
 fun CustomTopAppBar(
     status: ConnectionStatus?,
     sha: String?,
+    onNavigateSettings: () -> Unit,
 ) {
     val appBarColor by animateColorAsState(
         label = "StatusColorFade",
@@ -31,7 +32,7 @@ fun CustomTopAppBar(
             }
         },
         actions = {
-            SettingsIcon()
+            SettingsIcon(onNavigateSettings = onNavigateSettings)
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = appBarColor)
     )
@@ -40,7 +41,6 @@ fun CustomTopAppBar(
 @Preview
 @Composable
 fun AppBarPreview () {
-    CustomTopAppBar(status = ConnectionStatus.CONNECTED, sha = "" )
 }
 
 

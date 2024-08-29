@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pavdev.autocommit.ui.screens.ConfigScreen
 import com.pavdev.autocommit.ui.screens.MainScreen
+import com.pavdev.autocommit.ui.screens.SettingsScreen
 import com.pavdev.autocommit.ui.theme.AutocommitTheme
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
@@ -40,12 +41,12 @@ fun SetupNavGraph(navController: NavHostController, mainViewModel: MainViewModel
             MainScreen(
                 mainViewModel = mainViewModel,
                 onNavigateToConfig = {
-                    navController.navigate("config_screen")
+                    navController.navigate("settings_screen")
                 }
             )
         }
-        composable("config_screen") {
-            ConfigScreen(
+        composable("settings_screen") {
+            SettingsScreen(
                 mainViewModel = mainViewModel,
                 onNavigateBack = {
                     navController.popBackStack()

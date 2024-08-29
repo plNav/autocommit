@@ -16,7 +16,7 @@ import androidx.compose.runtime.setValue
 import com.pavdev.autocommit.data.enums.SettingsOption
 
 @Composable
-fun SettingsIcon() {
+fun SettingsIcon(onNavigateSettings: () -> Unit) {
     var showMenu by remember { mutableStateOf(false) }
 
     Box {
@@ -35,7 +35,12 @@ fun SettingsIcon() {
                     text = { Text(option.description) },
                     onClick = {
                         showMenu = false
-                        onOptionSelected(option)
+                        when (option) {
+                            SettingsOption.CHANGE_DEFAULTS -> onNavigateSettings()
+                            SettingsOption.CUSTOM_COMMIT -> onCustomCommitClicked()
+                            SettingsOption.CHECK_LOG -> onCheckLogClicked()
+                            SettingsOption.ABOUT -> onAboutClicked()
+                        }
                     }
                 )
             }
@@ -43,18 +48,6 @@ fun SettingsIcon() {
     }
 }
 
-fun onOptionSelected(option: SettingsOption) {
-    when (option) {
-        SettingsOption.CHANGE_DEFAULTS -> onChangeDefaultsClicked()
-        SettingsOption.CUSTOM_COMMIT -> onCustomCommitClicked()
-        SettingsOption.CHECK_LOG -> onCheckLogClicked()
-        SettingsOption.ABOUT -> onAboutClicked()
-    }
-}
-
-fun onChangeDefaultsClicked() {
-    println("Change Defaults clicked")
-}
 
 fun onCustomCommitClicked() {
     println("Custom Commit clicked")
