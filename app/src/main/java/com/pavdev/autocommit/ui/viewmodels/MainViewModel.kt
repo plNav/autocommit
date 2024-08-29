@@ -11,7 +11,6 @@ import com.pavdev.autocommit.data.Settings
 import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
 import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.domain.GitHubApi
-import com.pavdev.autocommit.domain.TOKEN
 import com.pavdev.autocommit.util.CryptoManager
 import com.pavdev.autocommit.util.DataStoreManager
 import com.pavdev.autocommit.util.FileManager
@@ -26,7 +25,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val filesDir = application.filesDir
     private var token: String? = null
 
-    private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
+    private val _status = MutableLiveData(ConnectionStatus.CONNECTING)
     private val _settings = MutableLiveData<Settings?>(null)
     private val _content = MutableLiveData<String?>(null)
     private val _error = MutableLiveData<String?>(null)
@@ -46,8 +45,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             val storedSettings = dataStoreManager.getSettings()
             _settings.value = storedSettings
-            token = TOKEN
+            token = decryptMessage()
             if (!validateCredentials()) {
+                _status.postValue(ConnectionStatus.DISCONNECTED)
                 return@launch
             }
             githubApi.configure(
