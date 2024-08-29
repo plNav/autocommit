@@ -15,13 +15,17 @@ interface GitHubService {
         const val BASE_URL = "https://api.github.com/"
     }
 
-    @GET("repos/$USERNAME/$REPO/contents/{path}")
+    @GET("repos/{username}/{repo}/contents/{path}")
     suspend fun getRepoContents(
+        @Path("username") username: String,
+        @Path("repo") repo: String,
         @Path("path") path: String
     ): Response<GitHubContentResponse>
 
-    @PUT("repos/$USERNAME/$REPO/contents/{path}")
+    @PUT("repos/{username}/{repo}/contents/{path}")
     suspend fun updateFileContents(
+        @Path("username") username: String,
+        @Path("repo") repo: String,
         @Path("path") path: String,
         @Body requestBody: GitHubUpdateRequest
     ): Response<JsonObject>

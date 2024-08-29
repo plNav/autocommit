@@ -15,13 +15,14 @@ import com.pavdev.autocommit.util.DataStoreManager
 import com.pavdev.autocommit.util.FileManager
 import kotlinx.coroutines.launch
 
-class MainViewModel(application : Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val cryptoManager = CryptoManager()
     private val dataStoreManager = DataStoreManager(application)
+    private val githubApi = GitHubApi()
 
     private val filesDir = application.filesDir
-    private var token : String? = null
+    private var token: String? = null
 
     private val _status = MutableLiveData(ConnectionStatus.DISCONNECTED)
     private val _settings = MutableLiveData<Settings?>(null)
@@ -30,40 +31,56 @@ class MainViewModel(application : Application) : AndroidViewModel(application) {
     private val _sha = MutableLiveData<String?>(null)
 
     val status: LiveData<ConnectionStatus> = _status
-    val settings : LiveData<Settings?> = _settings
+    val settings: LiveData<Settings?> = _settings
     val content: LiveData<String?> = _content
     val error: LiveData<String?> = _error
     val sha: LiveData<String?> = _sha
 
     init {
         loadCredentials()
-        getReadmeContents()
+        if (validateCredentials()) {
+            getReadmeContents()
+        }
     }
 
     private fun loadCredentials() {
         viewModelScope.launch {
-           _settings.postValue(dataStoreManager.getSettings())
+            val storedSettings = dataStoreManager.getSettings()
+            _settings.postValue(storedSettings)
             token = decryptMessage()
+            if (token.isNullOrBlank()) {
+                throw Exception("Invalid Token Exception")
+            }
+            githubApi.configure(
+                token = token!!,
+                username = storedSettings.username,
+                repo = storedSettings.repository
+            )
         }
     }
 
-    private fun validateCredentials() : String? {
-        if(_settings.value == null ){
-            return "Settings Null"
+    private fun validateCredentials(): Boolean {
+        if (_settings.value == null) {
+            _error.value = "Settings Null"
+            return false
         }
-        if(token == null){
-            return "Token Null"
+        if (token == null) {
+            _error.value = "Token Null"
+            return false
         }
-        return null
+        val validation = _settings.value!!.validate()
+        if (validation != null) {
+            _error.value = validation
+            return false
+        }
+        return true
     }
 
     private fun getReadmeContents() {
-        validateCredentials()
-
         _status.value = ConnectionStatus.CONNECTING
         viewModelScope.launch {
             try {
-                val response = GitHubApi.retrofitService.getRepoContents(_settings.value!!.defaultRepoFile)
+                val response = githubApi.getRepoContents(_settings.value!!.defaultRepoFile)
                 if (!response.isSuccessful) {
                     _status.postValue(ConnectionStatus.FAILED)
                     _error.postValue("GetContentsResponseFailed \n $response")
@@ -84,7 +101,7 @@ class MainViewModel(application : Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveCredentials(settings : Settings, token : String){
+    fun saveCredentials(settings: Settings, token: String) {
         // TODO ENCRYPT AND
     }
 
@@ -109,7 +126,7 @@ class MainViewModel(application : Application) : AndroidViewModel(application) {
                     sha = sha.value!!,
                 )
                 val response =
-                    GitHubApi.retrofitService.updateFileContents(
+                    githubApi.updateFileContents(
                         _settings.value!!.defaultRepoFile, updateRequest
                     )
                 if (response.isSuccessful) {
