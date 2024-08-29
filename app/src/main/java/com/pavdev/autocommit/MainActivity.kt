@@ -5,6 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.pavdev.autocommit.ui.screens.ConfigScreen
 import com.pavdev.autocommit.ui.screens.MainScreen
 import com.pavdev.autocommit.ui.theme.AutocommitTheme
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
@@ -17,12 +23,34 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AutocommitTheme {
-               MainScreen(mainViewModel)
+                val navController = rememberNavController()
+                SetupNavGraph(navController = navController, mainViewModel = mainViewModel)
             }
         }
     }
 }
 
-
-
-
+@Composable
+fun SetupNavGraph(navController: NavHostController, mainViewModel: MainViewModel) {
+    NavHost(
+        navController = navController,
+        startDestination = "main_screen"
+    ) {
+        composable("main_screen") {
+            MainScreen(
+                mainViewModel = mainViewModel,
+                onNavigateToConfig = {
+                    navController.navigate("config_screen")
+                }
+            )
+        }
+        composable("config_screen") {
+            ConfigScreen(
+                mainViewModel = mainViewModel,
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+    }
+}

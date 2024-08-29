@@ -76,6 +76,10 @@ dependencies {
     // Shared Preferences
     implementation (libs.androidx.datastore.preferences)
 
+    // Navigation
+    implementation (libs.androidx.navigation.compose )
+
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

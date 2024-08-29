@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
 @Composable
-fun ConfigScreen(mainViewModel: MainViewModel) {
+fun ConfigScreen(mainViewModel: MainViewModel, onNavigateBack: () -> Unit) {
     var messageToEncrypt by remember {
         mutableStateOf("")
     }
@@ -55,6 +55,9 @@ fun ConfigScreen(mainViewModel: MainViewModel) {
                 }
             }
             Text(text = messageToDecrypt)
+            Button(onClick = onNavigateBack) {
+                Text(text = "Back to Main")
+            }
         }
 
     }

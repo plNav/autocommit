@@ -18,7 +18,7 @@ import com.pavdev.autocommit.ui.theme.AutocommitTheme
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
 @Composable
-fun MainScreen(mainViewModel: MainViewModel) {
+fun MainScreen(mainViewModel: MainViewModel, onNavigateToConfig: () -> Unit) {
     val status by mainViewModel.status.observeAsState()
     val sha by mainViewModel.sha.observeAsState()
     val content by mainViewModel.content.observeAsState()
@@ -50,6 +50,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
             content = content,
             status = status!!,
             error = error,
+            onNavigateToConfig = onNavigateToConfig
         )
     }
 }
@@ -64,34 +65,7 @@ fun MainScreenPreview() {
     val isDarkTheme = false
     val error = "Preview Error"
     AutocommitTheme (darkTheme = isDarkTheme){
-        Scaffold(
-            topBar = {
-                CustomTopAppBar(
-                    status = status,
-                    sha = sha,
-                )
-            },
-            bottomBar = {
-                BottomAppBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(140.dp),
-                ) {
-                    ActionButton(
-                        name = "AUTOCOMMIT",
-                        isEnabled = status == ConnectionStatus.CONNECTED,
-                        onClick = {  }
-                    )
-                }
-            },
-        ) { innerPadding ->
-            MainContent(
-                innerPadding = innerPadding,
-                content = content,
-                status = status,
-                error = error,
-            )
-        }
+
     }
 
 }
