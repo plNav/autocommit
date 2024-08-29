@@ -66,8 +66,35 @@ fun MainScreenPreview() {
     val isDarkTheme = false
     val error = "Preview Error"
     AutocommitTheme (darkTheme = isDarkTheme){
-
+        Scaffold(
+            topBar = {
+                CustomTopAppBar(
+                    status = status,
+                    sha = sha,
+                    onNavigateSettings = {}
+                )
+            },
+            bottomBar = {
+                BottomAppBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(140.dp),
+                ) {
+                    ActionButton(
+                        name = "AUTOCOMMIT",
+                        isEnabled = status == ConnectionStatus.CONNECTED,
+                        onClick = {  }
+                    )
+                }
+            },
+        ) { innerPadding ->
+            MainContent(
+                innerPadding = innerPadding,
+                content = content,
+                status = status,
+                error = error,
+                onNavigateToConfig = {  }
+            )
+        }
     }
-
 }
-

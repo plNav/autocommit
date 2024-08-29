@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pavdev.autocommit.data.dtos.GitHubUpdateRequest
 import com.pavdev.autocommit.data.enums.ConnectionStatus
-import com.pavdev.autocommit.data.model.Settings
+import com.pavdev.autocommit.data.models.Settings
 import com.pavdev.autocommit.domain.GitHubApi
 import com.pavdev.autocommit.util.CryptoManager
 import com.pavdev.autocommit.util.DataStoreManager

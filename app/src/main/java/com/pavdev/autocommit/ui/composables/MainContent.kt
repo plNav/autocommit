@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -27,11 +26,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pavdev.autocommit.data.enums.ConnectionStatus
-import com.pavdev.autocommit.ui.theme.AutocommitTheme
 
 @Composable
 fun MainContent(
@@ -50,9 +47,10 @@ fun MainContent(
             .fillMaxSize()
             .padding(innerPadding),
     ) {
-
         Crossfade(
-            label = "Status Content Crossfade", targetState = status, animationSpec = tween(1000)
+            label = "Status Content Crossfade",
+            targetState = status,
+            animationSpec = tween(1000)
         ) { animatedStatus ->
             when (animatedStatus) {
                 ConnectionStatus.CONNECTING -> {
@@ -70,7 +68,7 @@ fun MainContent(
                 }
 
                 ConnectionStatus.DISCONNECTED -> {
-                   ContentError(error = error, onNavigateToConfig = onNavigateToConfig)
+                    ContentError(error = error, onNavigateToConfig = onNavigateToConfig)
                 }
 
                 ConnectionStatus.FAILED -> {
@@ -100,22 +98,11 @@ fun MainContent(
                                 .rotate(270f)
                                 .offset(y = 80.dp)
                                 .padding(end = 5.dp)
-
                         )
                     }
                 }
             }
         }
-    }
-}
-
-
-
-@Preview
-@Composable
-fun ContentPreview() {
-    AutocommitTheme {
-
     }
 }
 

@@ -43,7 +43,7 @@ fun ActionButton(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            AutocommitIcon(size = 56.dp)
+            AutoCommitIcon(size = 56.dp)
             Text(
                 text = name,
                 style = TextStyle(

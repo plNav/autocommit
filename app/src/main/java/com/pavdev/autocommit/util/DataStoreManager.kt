@@ -6,11 +6,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.pavdev.autocommit.data.model.Settings
-import kotlinx.coroutines.flow.Flow
+import com.pavdev.autocommit.data.models.Settings
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-
 
 class DataStoreManager(context: Context) {
 
@@ -30,23 +27,6 @@ class DataStoreManager(context: Context) {
             val DEFAULT_ADDED_LINE = stringPreferencesKey("default_added_line")
         }
     }
-
-
-   private val autoCommitCredentialsFlow: Flow<Settings> = dataStore.data
-        .map { preferences ->
-            Settings(
-                username = preferences[PreferenceKeys.USERNAME]
-                    ?: Settings.DEFAULT_SETTINGS.username,
-                repository = preferences[PreferenceKeys.REPOSITORY]
-                    ?: Settings.DEFAULT_SETTINGS.repository,
-                defaultCommit = preferences[PreferenceKeys.DEFAULT_COMMIT]
-                    ?: Settings.DEFAULT_SETTINGS.defaultCommit,
-                defaultRepoFile = preferences[PreferenceKeys.DEFAULT_REPO_FILE]
-                    ?: Settings.DEFAULT_SETTINGS.defaultRepoFile,
-                defaultAddedLine = preferences[PreferenceKeys.DEFAULT_ADDED_LINE]
-                    ?: Settings.DEFAULT_SETTINGS.defaultAddedLine
-            )
-        }
 
     suspend fun saveSettings(credentials: Settings) {
         dataStore.edit { preferences ->

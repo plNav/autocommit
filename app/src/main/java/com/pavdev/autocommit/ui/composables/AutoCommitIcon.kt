@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.ui.theme.iconColor
 
 @Composable
-fun AutocommitIcon(
+fun AutoCommitIcon(
     size: Dp = 32.dp,
     color: Color = iconColor,
     backgroundColor: Color = Color.Transparent
@@ -123,5 +123,5 @@ fun AutocommitIcon(
 @Preview
 @Composable
 fun IconPreview() {
-    AutocommitIcon(size = 255.dp)
+    AutoCommitIcon(size = 255.dp)
 }

@@ -8,7 +8,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
 import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.ui.theme.unconnectedLight
 
@@ -37,12 +36,6 @@ fun CustomTopAppBar(
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = appBarColor)
     )
 }
-
-@Preview
-@Composable
-fun AppBarPreview () {
-}
-
 
 
 

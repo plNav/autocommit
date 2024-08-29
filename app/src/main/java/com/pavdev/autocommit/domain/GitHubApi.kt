@@ -18,9 +18,7 @@ class GitHubApi {
     private var repo: String? = null
 
     private var _retrofitService: GitHubService? = null
-
     private val jsonConverter = Json { ignoreUnknownKeys = true }
-
     private val service: GitHubService
         get() = _retrofitService ?: retrofitService
 
