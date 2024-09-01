@@ -1,6 +1,5 @@
 package com.pavdev.autocommit.ui.screens
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import com.pavdev.autocommit.data.models.Settings
 import com.pavdev.autocommit.ui.theme.AutocommitTheme
 import com.pavdev.autocommit.ui.theme.onBackgroundDark
-import com.pavdev.autocommit.ui.theme.onBackgroundLight
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
