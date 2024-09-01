@@ -1,16 +1,12 @@
 package com.pavdev.autocommit.ui.screens
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.data.enums.ConnectionStatus
 import com.pavdev.autocommit.ui.composables.ActionButton
 import com.pavdev.autocommit.ui.composables.MainContent
@@ -65,7 +61,7 @@ fun MainScreenPreview() {
     val content = "Preview Content"
     val isDarkTheme = false
     val error = "Preview Error"
-    AutocommitTheme (darkTheme = isDarkTheme){
+    AutocommitTheme(darkTheme = isDarkTheme) {
         Scaffold(
             topBar = {
                 CustomTopAppBar(
@@ -76,16 +72,13 @@ fun MainScreenPreview() {
             },
             bottomBar = {
                 BottomAppBar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(140.dp),
                     containerColor = Color.Transparent,
                     contentColor = Color.Transparent,
                 ) {
                     ActionButton(
                         name = "AUTOCOMMIT",
                         isEnabled = status == ConnectionStatus.CONNECTED,
-                        onClick = {  }
+                        onClick = {}
                     )
                 }
             },
@@ -95,7 +88,7 @@ fun MainScreenPreview() {
                 content = content,
                 status = status,
                 error = error,
-                onNavigateToConfig = {  }
+                onNavigateToConfig = {}
             )
         }
     }
