@@ -1,3 +1,5 @@
+package com.pavdev.autocommit
+
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.pavdev.autocommit.data.models.Settings
