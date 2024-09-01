@@ -1,5 +1,6 @@
 package com.pavdev.autocommit.ui.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pavdev.autocommit.data.models.Settings
 import com.pavdev.autocommit.ui.theme.AutocommitTheme
+import com.pavdev.autocommit.ui.theme.onBackgroundDark
+import com.pavdev.autocommit.ui.theme.onBackgroundLight
 import com.pavdev.autocommit.ui.viewmodels.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,7 +95,8 @@ fun SettingsScreen(mainViewModel: MainViewModel, onNavigateBack: () -> Unit) {
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 letterSpacing = 1.sp,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = onBackgroundDark
                             ),
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -189,7 +193,8 @@ fun SettingsScreen(mainViewModel: MainViewModel, onNavigateBack: () -> Unit) {
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
                             letterSpacing = 1.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = onBackgroundDark
                         )
                     )
                 }
@@ -223,6 +228,7 @@ fun SettingsScreen(mainViewModel: MainViewModel, onNavigateBack: () -> Unit) {
                     },
                     confirmButton = {
                         Button(
+                            shape = RoundedCornerShape(4.dp),
                             onClick = {
                                 if (token.isNotEmpty()) {
                                     mainViewModel.saveToken(token)
@@ -230,7 +236,15 @@ fun SettingsScreen(mainViewModel: MainViewModel, onNavigateBack: () -> Unit) {
                                 }
                             }
                         ) {
-                            Text("Save")
+                            Text(
+                                "SAVE",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                letterSpacing = 1.sp,
+                                textAlign = TextAlign.Center,
+                                color = onBackgroundDark
+
+                            )
                         }
                     },
                 )

@@ -1,6 +1,7 @@
 package com.pavdev.autocommit.ui.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pavdev.autocommit.ui.theme.onBackgroundDark
+import com.pavdev.autocommit.ui.theme.onBackgroundLight
 
 
 @Composable
@@ -49,7 +52,11 @@ fun ActionButton(
                 style = TextStyle(
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
+                    letterSpacing = 2.sp,
+                    color =
+                    if (isEnabled) onBackgroundDark
+                    else if (isSystemInDarkTheme()) onBackgroundDark.copy(alpha = 0.5f)
+                    else onBackgroundLight.copy(alpha = 0.5f)
                 )
             )
         }
@@ -65,6 +72,6 @@ fun MyButtonPreview() {
             .height(100.dp)
             .padding(10.dp)
     ) {
-        ActionButton(name = "AUTOCOMMIT") {}
+        ActionButton(name = "AUTOCOMMIT", isEnabled = false) {}
     }
 }

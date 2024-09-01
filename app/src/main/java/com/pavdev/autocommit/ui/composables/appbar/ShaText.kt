@@ -15,12 +15,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pavdev.autocommit.ui.theme.onBackgroundDark
 import kotlinx.coroutines.delay
 
 @Composable
 fun ShaText(sha: String?) {
     var displayedText by remember { mutableStateOf("") }
-    val targetText = sha ?: "."
+    val targetText = sha.orEmpty()
 
     LaunchedEffect(targetText) {
         displayedText = ""
@@ -33,8 +34,8 @@ fun ShaText(sha: String?) {
         text = displayedText,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp),
-        style = TextStyle(fontSize = 10.sp),
+            .padding(horizontal = 3.dp),
+        style = TextStyle(fontSize = 12.sp, color = onBackgroundDark),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         textAlign = TextAlign.Start

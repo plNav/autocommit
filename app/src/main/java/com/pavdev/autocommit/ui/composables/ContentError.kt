@@ -1,5 +1,6 @@
 package com.pavdev.autocommit.ui.composables
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pavdev.autocommit.ui.theme.onBackgroundDark
 
 @Composable
 fun ContentError(error: String?, onNavigateToConfig: () -> Unit) {
@@ -48,7 +50,8 @@ fun ContentError(error: String?, onNavigateToConfig: () -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Build,
-                    contentDescription = "Navigate"
+                    contentDescription = "Navigate",
+                    tint = onBackgroundDark
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
@@ -57,7 +60,8 @@ fun ContentError(error: String?, onNavigateToConfig: () -> Unit) {
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
                         letterSpacing = 1.sp,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = onBackgroundDark
                     )
                 )
             }

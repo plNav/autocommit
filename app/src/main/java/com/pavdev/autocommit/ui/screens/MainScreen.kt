@@ -2,12 +2,14 @@ package com.pavdev.autocommit.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pavdev.autocommit.data.enums.ConnectionStatus
@@ -34,9 +36,8 @@ fun MainScreen(mainViewModel: MainViewModel, onNavigateToConfig: () -> Unit) {
         },
         bottomBar = {
             BottomAppBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(140.dp),
+                containerColor = Color.Transparent,
+                contentColor = Color.Transparent,
             ) {
                 ActionButton(
                     name = "AUTOCOMMIT",
@@ -60,7 +61,7 @@ fun MainScreen(mainViewModel: MainViewModel, onNavigateToConfig: () -> Unit) {
 @Preview
 @Composable
 fun MainScreenPreview() {
-    val status = ConnectionStatus.FAILED
+    val status = ConnectionStatus.DISCONNECTED
     val sha = "1234123412341234123412341234"
     val content = "Preview Content"
     val isDarkTheme = false
@@ -79,6 +80,8 @@ fun MainScreenPreview() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(140.dp),
+                    containerColor = Color.Transparent,
+                    contentColor = Color.Transparent,
                 ) {
                     ActionButton(
                         name = "AUTOCOMMIT",

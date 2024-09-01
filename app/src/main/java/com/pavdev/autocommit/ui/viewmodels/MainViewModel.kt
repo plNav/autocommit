@@ -2,7 +2,6 @@ package com.pavdev.autocommit.ui.viewmodels
 
 import android.app.Application
 import android.util.Base64
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -93,7 +92,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 val responseBody = response.body()
                 responseBody?.sha?.let {
-                    _sha.value = responseBody.sha
+                    _sha.value = it
                 }
                 responseBody?.content?.let {
                     _content.value = String(Base64.decode(it, Base64.DEFAULT))
@@ -119,10 +118,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun saveSettings(settings: Settings) {
         _settings.value = settings
         githubApi.configure(username = settings.username, repo = settings.repository)
-        viewModelScope.launch {
-            dataStoreManager.saveSettings(settings)
-            Log.i("dev", "Settings Saved $settings")
-        }
+        viewModelScope.launch { dataStoreManager.saveSettings(settings) }
         getRepoContent()
     }
 

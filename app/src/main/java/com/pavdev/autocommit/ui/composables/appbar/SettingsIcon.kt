@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.pavdev.autocommit.data.enums.SettingsOption
+import com.pavdev.autocommit.ui.theme.onBackgroundDark
 
 @Composable
 fun SettingsIcon(onNavigateSettings: () -> Unit) {
@@ -23,7 +24,8 @@ fun SettingsIcon(onNavigateSettings: () -> Unit) {
         IconButton(onClick = { showMenu = !showMenu }) {
             Icon(
                 imageVector = Icons.Filled.Settings,
-                contentDescription = "Settings"
+                contentDescription = "Settings",
+                tint = onBackgroundDark
             )
         }
         DropdownMenu(
