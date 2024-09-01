@@ -74,11 +74,11 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // Shared Preferences
-    implementation (libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.preferences)
 
     // Navigation
-    implementation (libs.androidx.navigation.compose )
-
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.core.ktx)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,7 +89,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     testImplementation(libs.junit)
-    testImplementation (libs.kotlinx.coroutines.test)
-    testImplementation (libs.androidx.core.testing)
-    testImplementation (libs.kotlin.test.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.robolectric)
 }

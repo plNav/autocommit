@@ -53,4 +53,10 @@ class DataStoreManager(context: Context) {
                 ?: Settings.DEFAULT_SETTINGS.defaultAddedLine
         )
     }
+
+    suspend fun clearSettings() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
 }
