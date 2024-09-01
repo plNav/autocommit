@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE)
 @ExperimentalUnsignedTypes
-class DataStoreTest {
+class DataStoreManagerTest {
     private lateinit var dataStoreManager: DataStoreManager
 
     @Before
@@ -21,7 +21,6 @@ class DataStoreTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         dataStoreManager = DataStoreManager(context)
     }
-
 
     @Test
     fun testWriteAndRead() = runTest {
