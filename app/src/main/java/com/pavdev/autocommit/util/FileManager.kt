@@ -8,7 +8,7 @@ class FileManager {
 
     companion object {
 
-        private const val TARGET_FILE = "autocommit-secret.txt"
+        const val TARGET_FILE = "autocommit-secret.txt"
 
         fun getFileOutputStream(filesDir: File): FileOutputStream {
             val file = File(filesDir, TARGET_FILE)
