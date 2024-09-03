@@ -19,7 +19,7 @@ Utilizes Security KeyStore with encryption to save GitHub tokens
 ### **Datastore Persistence**
 Basic Settings are kept in DataStore
 
----
+--- 
 
 ## Try it!
    ```bash
