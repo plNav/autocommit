@@ -43,7 +43,8 @@ fun ActionButton(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .fillMaxWidth().padding(horizontal = 20.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
         ) {
             AutoCommitIcon(size = 56.dp)
             Text(
