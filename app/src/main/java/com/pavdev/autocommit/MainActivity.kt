@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             AutocommitTheme {
                 val navController = rememberNavController()
                 SetupNavGraph(navController = navController, mainViewModel = mainViewModel)
